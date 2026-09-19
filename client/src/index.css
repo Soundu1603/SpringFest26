@@ -1,0 +1,81 @@
+ :root {
+  /* TECHNOVA'26 global premium purple theme */
+  --purple-950: #32104F;
+  --purple-900: #3D0A6F;
+  --purple-800: #4B0D82;
+  --purple-700: #681FA2;
+  --purple-600: #7A2BC6;
+  --purple-500: #C77DFF;
+  --purple-400: #D9A3FF;
+  --purple-300: #E6C6FF;
+  --purple-200: #F0D9FF;
+  --purple-100: #F7EEFF;
+  --white: #FFFFFF;
+
+  --text-dark: #FFFFFF;
+  --text-muted: #E1D2ED;
+  --background: #32104F;
+  --border: rgba(217, 163, 255, 0.24);
+
+  --tech-bg-gradient: linear-gradient(
+    135deg,
+    #32104F 0%,
+    #3D0A6F 35%,
+    #4B0D82 60%,
+    #681FA2 100%
+  );
+
+  --shadow-soft: 0 18px 38px rgba(15, 6, 24, 0.26);
+  --shadow-strong: 0 24px 60px rgba(23, 8, 39, 0.42);
+  --max-width: 1200px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Poppins, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--tech-bg-gradient);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
