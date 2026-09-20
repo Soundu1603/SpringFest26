@@ -13,62 +13,70 @@ function RegistrationSuccess({ data, onNew }) {
     return;
   }
 
-  const finalSvg = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "svg"
-  );
+  const svgData = new XMLSerializer().serializeToString(svg);
 
-  finalSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  finalSvg.setAttribute("width", "700");
-  finalSvg.setAttribute("height", "700");
-  finalSvg.setAttribute("viewBox", "0 0 700 700");
-
-  // White background
-  const background = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "rect"
-  );
-
-  background.setAttribute("x", "0");
-  background.setAttribute("y", "0");
-  background.setAttribute("width", "700");
-  background.setAttribute("height", "700");
-  background.setAttribute("fill", "#FFFFFF");
-
-  finalSvg.appendChild(background);
-
-  // Clone the actual QR
-  const qrClone = svg.cloneNode(true);
-
-  qrClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  qrClone.setAttribute("x", "100");
-  qrClone.setAttribute("y", "100");
-  qrClone.setAttribute("width", "500");
-  qrClone.setAttribute("height", "500");
-
-  finalSvg.appendChild(qrClone);
-
-  const svgData = new XMLSerializer().serializeToString(finalSvg);
-
-  const blob = new Blob(
+  const svgBlob = new Blob(
     [svgData],
     { type: "image/svg+xml;charset=utf-8" }
   );
 
-  const url = URL.createObjectURL(blob);
+  const url = URL.createObjectURL(svgBlob);
 
-  const link = document.createElement("a");
+  const img = new Image();
 
-  link.href = url;
-  link.download = `SPRING-FEST-26-${data.id}-Attendance-QR.svg`;
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    canvas.width = 700;
+    canvas.height = 700;
 
-  setTimeout(() => {
+    const ctx = canvas.getContext("2d");
+
+    // White background
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, 700, 700);
+
+    // Draw QR in the center
+    ctx.drawImage(
+      img,
+      100,
+      100,
+      500,
+      500
+    );
+
     URL.revokeObjectURL(url);
-  }, 1000);
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        alert("Could not save QR code.");
+        return;
+      }
+
+      const pngUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = pngUrl;
+      link.download =
+        `SPRING-FEST-26-${data.id}-Attendance-QR.png`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => {
+        URL.revokeObjectURL(pngUrl);
+      }, 1000);
+    }, "image/png");
+  };
+
+  img.onerror = () => {
+    URL.revokeObjectURL(url);
+    alert("Could not create QR image.");
+  };
+
+  img.src = url;
 };
   return (
     <div className="confirmation-card">
